@@ -1,0 +1,22 @@
+{
+  "name": "tinpriv",
+  "version": "0.0.1",
+  "description": "A private  messaging and tinyurl service ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index -e js, hbs",
+    "startdb": "/Users/bastinjafari/Documents/mongodb/bin/mongod --dbpath=/Users/bastinjafari/Documents/tinpriv-data"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "farmhash": "^3.0.0",
+    "hbs": "^4.0.6",
+    "mongoose": "^5.8.5",
+    "nodemon": "^2.0.2",
+    "validator": "^12.1.0"
+  }
+}
