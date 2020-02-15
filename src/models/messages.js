@@ -14,6 +14,10 @@ const messageSchema = new mongoose.Schema({
                 throw new Error('Invalid URL')
             }
         }
+    },
+    _id: {
+        type: Number,
+        required: true,
     }
 })
 

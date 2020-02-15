@@ -1,18 +1,19 @@
+//todolist: Check for hash collisions when saving a new message
+
+
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 const hbs = require('hbs')
 const path = require('path')
-const ObjectID = require('mongodb').ObjectID
 const convert = require('./utils/convert')
 const val = require('./middleware/validation.js')
 const encrypt = require('./middleware/encrypt.js')
-const generateSfxKey = require('./utils/generateSfxKey.js')
-
+const farmHash = require('farmHash')
 const Message = require('./models/messages.js')
-
 const publicDirectoryPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
+const mongoose = require('mongoose')
 
 require('../db/mongoose.js')
 
@@ -26,33 +27,29 @@ app.listen(port, () => {
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 
-app.get('', async (req, res) => {
-    console.log('get')
-    const message = new Message({
-        message: "Test1",
-        url: "www.hackkarte.de"
-    })
+app.get('/*', async (req, res) => {
+
+    const userKey = req.params[0]
+    const dbKey = farmHash.hash32(userKey)
+
     try {
-        await message.save()
-        res.send("Test1")
-
+        message = await Message.findById(dbKey)
+        res.send(message)
     } catch (error) {
-        console.log(error)
-
         res.status(500).send(error)
     }
-    
 })
 
 app.post('', val, encrypt, async (req, res) => {   
-    const sfxKey = generateSfxKey()
-    const id = new ObjectID(sfxKey.dbKey)
+    const sfxKey = req.body.sfxKey
+
+
     const message = new Message({
         message: req.body.msg,
         url: req.body.url,
-        _id: id
+        _id: sfxKey.dbKey
     })
-
+    console.log('Message: ' + message)
     try {
         await message.save()
         console.log("message saved")

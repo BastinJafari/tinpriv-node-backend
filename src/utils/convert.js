@@ -1,16 +1,19 @@
-const numOfChars = 94 //all visible ascii characters
-const firstChar = 33 //first visible ascii char
+const validAlphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~'
+const numOfChars = validAlphabet.length
+
 
 const hashToString = (hash) => {
+
+    console.log("number is " + hash)
     let hashString = ''
 
     if (hash < numOfChars) {
-        return String.fromCharCode(hash+firstChar)
+        return validAlphabet[hash]
     } else {
 
         while(hash > 0) {
-            const remainderWithoutZero = (hash % numOfChars)
-            hashString += String.fromCharCode(remainderWithoutZero  + firstChar)
+            const remainder = (hash % numOfChars)
+            hashString += validAlphabet[remainder]
             hash = Math.floor(hash/numOfChars)
         }
         return hashString
@@ -25,7 +28,7 @@ const stringToHash = (str) => {
     let factor = 1
 
     reversedString.forEach(letter => {
-        hash += (letter.charCodeAt(0) - firstChar) * factor 
+        hash += (validAlphabet.indexOf(letter)) * factor 
         factor *= numOfChars
     });
 
