@@ -1,5 +1,7 @@
-//todolist: Check for hash collisions when saving a new message
-
+//todolist: 
+//Check for hash collisions when saving a new
+//Refactor and Check for double imports (enrypt uses cypher and cypher is in index.js)
+//change name of DbItem message to somewhing more sensable to avoid message.message
 
 const express = require('express')
 const app = express()
@@ -14,7 +16,7 @@ const Message = require('./models/messages.js')
 const publicDirectoryPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
 const mongoose = require('mongoose')
-
+const decrypt = require('./utils/cipher').decrypt
 require('../db/mongoose.js')
 
 app.use(express.json())
@@ -34,7 +36,11 @@ app.get('/*', async (req, res) => {
 
     try {
         message = await Message.findById(dbKey)
-        res.send(message)
+        const decryptedMessage = decrypt(
+            message.message,
+            userKey
+        )
+        res.send(decryptedMessage)
     } catch (error) {
         res.status(500).send(error)
     }
