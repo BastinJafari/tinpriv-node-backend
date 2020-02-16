@@ -5,7 +5,6 @@ const validator = require('validator')
 const messageSchema = new mongoose.Schema({
     message: {
         type: String,
-        required: true,
     },
     url: {
         type: String,
