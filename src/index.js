@@ -1,10 +1,10 @@
 //todolist: 
-//Check for hash collisions when saving a new
+//Check for hash collisions when saving a new secret
 //Refactor and Check for double imports (enrypt uses cypher and cypher is in index.js)
 //change name of DbItem message to secret to avoid message.message
 //change sfxkey (sufix) to something more sensable
 //rename messages to secrets in the database
-//implement tersting
+//implement testing
 
 const express = require('express')
 const app = express()
