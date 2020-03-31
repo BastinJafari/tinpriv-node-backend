@@ -5,10 +5,13 @@
 //change sfxkey (sufix) to something more sensable
 //rename messages to secrets in the database
 //implement testing
+//use put instead of post
+//implement whitelist
 //REFACTOR!!!
 
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const port = process.env.PORT || 8000
 const hbs = require('hbs')
 const path = require('path')
@@ -24,6 +27,7 @@ const decrypt = require('./utils/cipher').decrypt
 const getSecret = require('./services/secrets.js')
 require('../db/mongoose.js')
 
+app.use(cors())
 app.use(express.json())
 app.use(express.static(publicDirectoryPath))
 
@@ -35,7 +39,6 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 
 app.get('/*', async (req, res) => {
-
     const userKey = req.params[0]
     const dbKey = farmHash.hash32(userKey)  //put that into getSecretService
 
@@ -49,8 +52,6 @@ app.get('/*', async (req, res) => {
 
 app.post('', val, encrypt, async (req, res) => {   
     const sfxKey = req.body.sfxKey
-
-
     const secret = new Secret({
         message: req.body.msg,
         url: req.body.url,
