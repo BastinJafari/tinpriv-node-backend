@@ -8,6 +8,8 @@ const encry = (req, res, next) => {
 
 
     try {
+        console.log(req.body)
+        console.log("Message: " + req.body.msg)
         req.body.msg = encrypt(req.body.msg, sfxKey.userKey)
         console.log('message encypted')
         next()

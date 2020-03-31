@@ -7,6 +7,8 @@
 //implement testing
 //use put instead of post
 //implement whitelist
+//better server errors
+//exchange hardcoded tinpriv with more generic approach
 //REFACTOR!!!
 
 const express = require('express')
@@ -39,10 +41,14 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 
 app.get('/*', async (req, res) => {
-    const userKey = req.params[0]
-    const dbKey = farmHash.hash32(userKey)  //put that into getSecretService
+
 
     try {
+        const userKey = req.params[0]
+        if (userKey) {
+            throw new Error("Must provide parameter")
+        }
+        const dbKey = farmHash.hash32(userKey)  //put that into getSecretService
         const secret = await getSecret(dbKey, userKey)
         res.send(secret)
     } catch (error) {
@@ -51,6 +57,7 @@ app.get('/*', async (req, res) => {
 })
 
 app.post('', val, encrypt, async (req, res) => {   
+    console.log("validated and encrypted")
     const sfxKey = req.body.sfxKey
     const secret = new Secret({
         message: req.body.msg,
