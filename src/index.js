@@ -5,10 +5,11 @@
 //change sfxkey (sufix) to something more sensable
 //rename messages to secrets in the database
 //implement testing
+//REFACTOR!!!
 
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8000
 const hbs = require('hbs')
 const path = require('path')
 const convert = require('./utils/convert')
