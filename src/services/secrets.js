@@ -4,7 +4,7 @@ const Secret = require('../models/secrets.js')
 const decrypt = require('../utils/cipher.js').decrypt
 
 const getSecret = async (dbKey, userKey) => {
-
+    console.log("GETSECRET")
     try {
         secret =  await Secret.findById(dbKey)
         console.log(secret)

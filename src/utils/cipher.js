@@ -7,11 +7,11 @@ const encrypt = (plainMessage, password) => {
     .digest(),
     iv = crypto.randomBytes(16),
     cipher = crypto.createCipheriv("aes256", key, iv),
-    msg = []
-    msg.push(cipher.update(plainMessage, "binary", "hex"))
-    msg.push(cipher.final("hex"))
-    const encryptedMsg = msg.join("")
-    return iv.toString('hex') + ':' + encryptedMsg
+    message = []
+    message.push(cipher.update(plainMessage, "binary", "hex"))
+    message.push(cipher.final("hex"))
+    const encryptedMessage = message.join("")
+    return iv.toString('hex') + ':' + encryptedMessage
 
 }
 
@@ -20,14 +20,14 @@ const decrypt = (encryptedMessage, password) => {
     .createHash("sha256")
     .update(password)
     .digest(),
-    ivAndMsg = encryptedMessage.split(':'),
-    iv = Buffer.from(ivAndMsg[0], 'hex'),
-    encryptMsgWithoutIv = ivAndMsg[1],
+    ivAndMessage = encryptedMessage.split(':'),
+    iv = Buffer.from(ivAndMessage[0], 'hex'),
+    encryptMessageWithoutIv = ivAndMessage[1],
     decipher = crypto.createDecipheriv("aes256", key, iv),
-    msg = []
-    msg.push(decipher.update(encryptMsgWithoutIv, "hex", "binary"));
-    msg.push(decipher.final("binary"));
-    decryptedMessage = msg.join("")
+    message = []
+    message.push(decipher.update(encryptMessageWithoutIv, "hex", "binary"));
+    message.push(decipher.final("binary"));
+    decryptedMessage = message.join("")
     return decryptedMessage
 }
 

@@ -41,15 +41,16 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 
 app.get('/*', async (req, res) => {
-
-
     try {
+        console.log("try")
         const userKey = req.params[0]
-        if (userKey) {
+        if (!userKey) {
             throw new Error("Must provide parameter")
         }
         const dbKey = farmHash.hash32(userKey)  //put that into getSecretService
+        console.log("dbKey" +dbKey)
         const secret = await getSecret(dbKey, userKey)
+        console.log("secret:" + secret)
         res.send(secret)
     } catch (error) {
         res.status(500).send(error)
@@ -60,7 +61,7 @@ app.post('', val, encrypt, async (req, res) => {
     console.log("validated and encrypted")
     const sfxKey = req.body.sfxKey
     const secret = new Secret({
-        message: req.body.msg,
+        message: req.body.message,
         url: req.body.url,
         _id: sfxKey.dbKey
     })
